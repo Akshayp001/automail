@@ -15,6 +15,11 @@ class _EmailComposerState extends State<EmailComposer> {
   final _bodyController = TextEditingController();
   List<PlatformFile> _attachments = [];
 
+  // Function to split comma-separated email addresses
+  List<String> _parseRecipients(String recipientString) {
+    return recipientString.split(',').map((e) => e.trim()).toList();
+  }
+
   Future<void> _pickFiles() async {
     final result = await FilePicker.platform.pickFiles(allowMultiple: true);
     if (result != null) {
@@ -26,8 +31,9 @@ class _EmailComposerState extends State<EmailComposer> {
 
   Future<void> _sendEmail() async {
     try {
+      final recipients = _parseRecipients(_toController.text);
       await EmailService().sendEmail(
-        to: _toController.text,
+        to: recipients.join(','),
         subject: _subjectController.text,
         body: _bodyController.text,
         attachments: _attachments,
@@ -55,7 +61,7 @@ class _EmailComposerState extends State<EmailComposer> {
           TextField(
             controller: _toController,
             decoration: const InputDecoration(
-              labelText: 'To',
+              labelText: 'To (comma-separated)',
               border: OutlineInputBorder(),
             ),
           ),

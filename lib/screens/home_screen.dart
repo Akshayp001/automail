@@ -26,7 +26,7 @@ class HomeScreen extends StatelessWidget {
       body: Column(
         children: [
           const EmailTemplates(),
-          const Expanded(child: EmailComposer()),
+           Expanded(child: EmailComposer()),
         ],
       ),
     );

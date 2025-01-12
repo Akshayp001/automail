@@ -1,4 +1,3 @@
-
 // lib/services/email_service.dart
 import 'dart:io';
 
@@ -26,7 +25,7 @@ class EmailService {
 
     final message = Message()
       ..from = Address(email)
-      ..recipients.add(to)
+      ..recipients.addAll(to.split(',').toList())
       ..subject = subject
       ..text = body;
 

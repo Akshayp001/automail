@@ -37,6 +37,7 @@ dependencies:
   mailer: ^6.4.0
   shared_preferences: ^2.3.5
   file_picker: ^8.1.7
+  mime: ^2.0.0
 
 dev_dependencies:
   flutter_test:
