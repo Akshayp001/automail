@@ -38,6 +38,9 @@ dependencies:
   shared_preferences: ^2.3.5
   file_picker: ^8.1.7
   mime: ^2.0.0
+  get: ^4.6.6
+  url_launcher: ^6.3.1
+  uuid: ^4.5.1
 
 dev_dependencies:
   flutter_test:
@@ -49,6 +52,13 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
+  icons_launcher: ^3.0.0
+
+icons_launcher:
+  image_path: 'assets/icons/appicon.png'
+  platforms:
+    android:
+      enable: true
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
