@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:automail/screens/home_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -13,28 +15,28 @@ class _SplashScreenState extends State<SplashScreen>
   late AnimationController _controller;
   late Animation<double> _opacity;
   late Animation<double> _scale;
-  
+
   // Custom colors
   final Color primaryPurple = Color(0xFF6C63FF);
   final Color accentPink = Color(0xFFFF69B4);
   final Color backgroundColor = Color(0xFFF8F0FF);
-  
+
   @override
   void initState() {
     super.initState();
-    
+
     _controller = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 2000),
     );
-    
+
     _opacity = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
         curve: Interval(0.0, 0.7, curve: Curves.easeIn),
       ),
     );
-    
+
     _scale = Tween<double>(begin: 0.8, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
@@ -43,10 +45,17 @@ class _SplashScreenState extends State<SplashScreen>
     );
 
     _controller.forward().whenComplete(() {
-      Timer(Duration(milliseconds: 1500), () {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => HomeScreen()),
-        );
+      Timer(Duration(milliseconds: 1500), () async {
+        final User? currentUser = FirebaseAuth.instance.currentUser;
+        if (currentUser != null) {
+          Get.offAllNamed('/home');
+          return;
+        }
+        Get.offAllNamed('/login');
+
+        // Navigator.of(context).pushReplacement(
+        //   MaterialPageRoute(builder: (context) => HomeScreen()),
+        // );
       });
     });
   }
@@ -100,7 +109,7 @@ class _SplashScreenState extends State<SplashScreen>
                         ),
                       ),
                       SizedBox(height: 30),
-                      
+
                       // App Name
                       Text(
                         "AutoMail",
@@ -119,7 +128,7 @@ class _SplashScreenState extends State<SplashScreen>
                         ),
                       ),
                       SizedBox(height: 10),
-                      
+
                       // Tagline
                       Text(
                         "Smart Email Solutions",
@@ -130,7 +139,7 @@ class _SplashScreenState extends State<SplashScreen>
                         ),
                       ),
                       SizedBox(height: 40),
-                      
+
                       // Custom Loading Indicator
                       Container(
                         width: 50,
@@ -138,7 +147,8 @@ class _SplashScreenState extends State<SplashScreen>
                         child: Stack(
                           children: [
                             CircularProgressIndicator(
-                              valueColor: AlwaysStoppedAnimation<Color>(accentPink),
+                              valueColor:
+                                  AlwaysStoppedAnimation<Color>(accentPink),
                               strokeWidth: 3,
                             ),
                             Center(
@@ -146,7 +156,8 @@ class _SplashScreenState extends State<SplashScreen>
                                 width: 40,
                                 height: 40,
                                 child: CircularProgressIndicator(
-                                  valueColor: AlwaysStoppedAnimation<Color>(primaryPurple),
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                      primaryPurple),
                                   strokeWidth: 3,
                                 ),
                               ),
@@ -154,7 +165,7 @@ class _SplashScreenState extends State<SplashScreen>
                           ],
                         ),
                       ),
-                      
+
                       SizedBox(height: 20),
                       Text(
                         "Loading...",

@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'email_compose_screen.dart';
 import '../../widgets/email_templates.dart';
 import '../../screens/settings_screen.dart';
@@ -8,43 +10,38 @@ import '../../screens/settings_screen.dart';
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
-  // void _showTemplateExplorer(BuildContext context) {
-  //   showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return AlertDialog(
-  //         title: const Text('Email Templates'),
-  //         content: SizedBox(
-  //           width: MediaQuery.of(context).size.width * 0.9,
-  //           height: MediaQuery.of(context).size.height * 0.8,
-  //           child: const EmailTemplates(),
-  //         ),
-  //         actions: [
-  //           TextButton(
-  //             onPressed: () => Navigator.pop(context),
-  //             child: const Text('Close'),
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(CupertinoIcons.settings_solid),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const SettingsScreen()),
+            );
+          },
+        ),
         title: const Text('AutoMail'),
         centerTitle: true,
         actions: [
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const SettingsScreen()),
-              );
-            },
+          Padding(
+            padding: const EdgeInsets.only(right:10.0),
+            child: InkWell(
+              child: CircleAvatar(
+                backgroundColor: Colors.white,
+                child: Icon(
+                  Icons.logout,
+                  color: Colors.red,
+                ),
+              ),
+              onTap: () async {
+                await FirebaseAuth.instance.signOut();
+                await GoogleSignIn().signOut();
+                Get.offAllNamed('/splash');
+              },
+            ),
           ),
         ],
       ),

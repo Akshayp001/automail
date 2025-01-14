@@ -1,5 +1,6 @@
 // lib/widgets/email_templates.dart
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../models/email_template.dart';
@@ -15,7 +16,8 @@ class EmailTemplates extends StatefulWidget {
 }
 
 class _EmailTemplatesState extends State<EmailTemplates> {
-  final TemplateService _templateService = TemplateService();
+  final TemplateService _templateService =
+      TemplateService(userId: FirebaseAuth.instance.currentUser?.email ?? '');
   final EmailService _emailService = EmailService();
   String _selectedCategory = 'All';
   String _searchQuery = '';
@@ -232,7 +234,11 @@ class _EmailTemplatesState extends State<EmailTemplates> {
 
                           break;
                         case 'delete':
-                          TemplateService().deleteTemplate(template.id);
+                          TemplateService(
+                                  userId: FirebaseAuth
+                                          .instance.currentUser?.email ??
+                                      '')
+                              .deleteTemplate(template.id);
                           setState(() {});
                           break;
                       }

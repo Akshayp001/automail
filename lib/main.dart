@@ -1,11 +1,16 @@
+import 'package:automail/screens/home_screen.dart';
+import 'package:automail/screens/login_screen.dart';
 import 'package:automail/screens/splash_screen.dart';
+import 'package:automail/utils/bindings.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:app_links/app_links.dart';
 import 'screens/email_compose_screen.dart';
-import 'screens/home_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  Firebase.initializeApp();
   runApp(const EmailApp());
 }
 
@@ -61,6 +66,12 @@ class _EmailAppState extends State<EmailApp> {
     return GetMaterialApp(
       title: 'AutoMail',
       theme: buildPurpleTheme(),
+      getPages: [
+        GetPage(name: '/login', page: ()=>LoginView(),binding: LoginBinding()),
+        GetPage(name: '/emailComposer', page:()=> EmailComposerScreen()),
+        GetPage(name: '/home', page: ()=>HomeScreen()),
+        GetPage(name: '/splash', page: ()=>SplashScreen()),
+      ],
       home: _initialEmail != null
           ? EmailComposerScreen(initialEmail: _initialEmail)
           : SplashScreen(),

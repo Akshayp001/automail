@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:uuid/uuid.dart';
@@ -11,7 +13,7 @@ class EmailComposerScreen extends StatefulWidget {
   final EmailTemplate? template;
   final String? initialEmail; // Optional initial email address
 
-  const EmailComposerScreen({super.key, this.template,this.initialEmail});
+  const EmailComposerScreen({super.key, this.template, this.initialEmail});
 
   @override
   State<EmailComposerScreen> createState() => _EmailComposerScreenState();
@@ -27,7 +29,7 @@ class _EmailComposerScreenState extends State<EmailComposerScreen> {
   // final _extra1Controller = TextEditingController();
   // final _extra2Controller = TextEditingController();
   List<PlatformFile> _attachments = [];
-  final _templateService = TemplateService();
+  // final _templateService = TemplateService();
   EmailTemplate? _selectedTemplate;
 
   List<String> _parseRecipients(String recipientString) {
@@ -64,7 +66,9 @@ class _EmailComposerScreenState extends State<EmailComposerScreen> {
       updatedAt: DateTime.now(),
     );
 
-    await _templateService.saveTemplate(template);
+    await TemplateService(
+            userId: FirebaseAuth.instance.currentUser?.email ?? '')
+        .saveTemplate(template);
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -297,7 +301,11 @@ class _EmailComposerScreenState extends State<EmailComposerScreen> {
                     ),
                     const SizedBox(height: 16),
                     FutureBuilder<List<EmailTemplate>>(
-                      future: TemplateService().getAllTemplates(),
+                      future: TemplateService(
+                              userId:
+                                  FirebaseAuth.instance.currentUser?.email ??
+                                      '')
+                          .getAllTemplates(),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           final templates = snapshot.data!;
@@ -336,9 +344,9 @@ class _EmailComposerScreenState extends State<EmailComposerScreen> {
                             hint: const Text('Select Template (Optional)'),
                           );
                         } else if (snapshot.hasError) {
-                          return Text('Error: ${snapshot.error}');
+                          return SizedBox.shrink();
                         }
-                        return const CircularProgressIndicator();
+                        return Center(child: const CircularProgressIndicator());
                       },
                     ),
                     const SizedBox(height: 16),
