@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:uuid/uuid.dart';
@@ -7,7 +9,9 @@ import '../models/email_template.dart';
 
 class EmailComposerScreen extends StatefulWidget {
   final EmailTemplate? template;
-  const EmailComposerScreen({super.key, this.template});
+  final String? initialEmail; // Optional initial email address
+
+  const EmailComposerScreen({super.key, this.template,this.initialEmail});
 
   @override
   State<EmailComposerScreen> createState() => _EmailComposerScreenState();
@@ -24,6 +28,7 @@ class _EmailComposerScreenState extends State<EmailComposerScreen> {
   // final _extra2Controller = TextEditingController();
   List<PlatformFile> _attachments = [];
   final _templateService = TemplateService();
+  EmailTemplate? _selectedTemplate;
 
   List<String> _parseRecipients(String recipientString) {
     return recipientString.split(',').map((e) => e.trim()).toList();
@@ -118,7 +123,7 @@ class _EmailComposerScreenState extends State<EmailComposerScreen> {
               //     labelText: 'Extra Field 2',
               //     border: OutlineInputBorder(),
               //   ),
-              // ), 
+              // ),
             ],
           ),
         ),
@@ -213,6 +218,14 @@ class _EmailComposerScreenState extends State<EmailComposerScreen> {
   }
 
   @override
+  void initState() {
+    if (widget.initialEmail != null) {
+      _toController.text = widget.initialEmail!;
+    }
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -281,6 +294,52 @@ class _EmailComposerScreenState extends State<EmailComposerScreen> {
                     _buildTextField(
                       controller: _toController,
                       label: 'To (comma-separated)',
+                    ),
+                    const SizedBox(height: 16),
+                    FutureBuilder<List<EmailTemplate>>(
+                      future: TemplateService().getAllTemplates(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          final templates = snapshot.data!;
+
+                          // Ensure the _selectedTemplate is part of the templates list
+                          if (_selectedTemplate != null &&
+                              !templates.contains(_selectedTemplate)) {
+                            _selectedTemplate =
+                                null; // Reset if it doesn't match
+                          }
+
+                          return DropdownButtonFormField<EmailTemplate>(
+                            value: _selectedTemplate,
+                            items: templates.map((template) {
+                              return DropdownMenuItem<EmailTemplate>(
+                                value: template,
+                                child: Text(template.name),
+                              );
+                            }).toList(),
+                            onChanged: (EmailTemplate? newTemplate) {
+                              setState(() {
+                                _selectedTemplate = newTemplate;
+
+                                if (newTemplate != null) {
+                                  _subjectController.text = newTemplate.subject;
+                                  _bodyController.text = newTemplate.body;
+                                  _attachments = newTemplate.attachmentPaths
+                                      .map((path) => PlatformFile(
+                                          name: path.split('/').last,
+                                          size: 0,
+                                          path: path))
+                                      .toList();
+                                }
+                              });
+                            },
+                            hint: const Text('Select Template (Optional)'),
+                          );
+                        } else if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        }
+                        return const CircularProgressIndicator();
+                      },
                     ),
                     const SizedBox(height: 16),
                     _buildTextField(

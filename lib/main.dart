@@ -1,32 +1,69 @@
-// pubspec.yaml dependencies
-/*
-dependencies:
-  flutter:
-    sdk: flutter
-  mailer: ^6.0.1
-  shared_preferences: ^2.2.2
-  file_picker: ^6.1.1
-*/
-
-// lib/main.dart
+import 'package:automail/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:app_links/app_links.dart';
+import 'screens/email_compose_screen.dart';
 import 'screens/home_screen.dart';
 
 void main() {
   runApp(const EmailApp());
 }
 
-class EmailApp extends StatelessWidget {
+class EmailApp extends StatefulWidget {
   const EmailApp({super.key});
+
+  @override
+  State<EmailApp> createState() => _EmailAppState();
+}
+
+class _EmailAppState extends State<EmailApp> {
+  late final AppLinks _appLinks;
+  String? _initialEmail;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeDeepLinks();
+  }
+
+  void _initializeDeepLinks() async {
+    _appLinks = AppLinks();
+    try {
+      // Handle initial link when the app is launched via a deep link
+      final Uri? initialLink = await _appLinks.getInitialLink();
+      if (initialLink != null && initialLink.scheme == 'mailto') {
+        setState(() {
+          _initialEmail = initialLink.path; // Extract the email address
+        });
+      }
+
+      // Handle incoming links while the app is in the foreground
+      _appLinks.uriLinkStream.listen((Uri? uri) {
+        if (uri != null && uri.scheme == 'mailto') {
+          setState(() {
+            _initialEmail = uri.path; // Extract the email address
+          });
+          _navigateToEmailComposer(_initialEmail);
+        }
+      });
+    } catch (e) {
+      // Handle any errors
+      print('Error initializing deep links: $e');
+    }
+  }
+
+  void _navigateToEmailComposer(String? email) {
+    Get.to(() => EmailComposerScreen(initialEmail: email));
+  }
 
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'AutoMail',
       theme: buildPurpleTheme(),
-      home: const HomeScreen(),
+      home: _initialEmail != null
+          ? EmailComposerScreen(initialEmail: _initialEmail)
+          : SplashScreen(),
     );
   }
 }
@@ -34,10 +71,9 @@ class EmailApp extends StatelessWidget {
 ThemeData buildPurpleTheme() {
   return ThemeData(
     useMaterial3: true,
-
-    primarySwatch: Colors.purple, // Overall primary color scheme
-    primaryColor: Colors.purple[700], // Specific primary color
-    scaffoldBackgroundColor: Colors.grey[100], // Light background for scaffolds
+    primarySwatch: Colors.purple,
+    primaryColor: Colors.purple[700],
+    scaffoldBackgroundColor: Colors.grey[100],
     appBarTheme: const AppBarTheme(
       toolbarHeight: 80,
       backgroundColor: Colors.purple,
@@ -46,37 +82,27 @@ ThemeData buildPurpleTheme() {
         fontSize: 20,
         fontWeight: FontWeight.bold,
       ),
-      iconTheme: IconThemeData(color: Colors.white), // Color of app bar icons
+      iconTheme: IconThemeData(color: Colors.white),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        textStyle: const TextStyle(
-          fontSize: 16,
-        ), // Text size for buttons
-        padding: const EdgeInsets.symmetric(
-            vertical: 12, horizontal: 24), // Padding around text
+        textStyle: const TextStyle(fontSize: 16),
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8), // Rounded corners
+          borderRadius: BorderRadius.circular(8),
         ),
-        elevation: 4, // Add a subtle shadow
+        elevation: 4,
       ).copyWith(
-        // Customize the background gradient
         backgroundColor: MaterialStateProperty.resolveWith<Color?>(
           (Set<MaterialState> states) {
-            // if (states.contains(MaterialState.pressed)) {
-            return Colors.purple[600]; // Darker purple on press
-            // } else if (states.contains(MaterialState.disabled)) {
-            //   return Colors.grey[400]; // Greyed out if disabled
-            // }
-            // return null; // Use the default purple gradient
+            return Colors.purple[600];
           },
         ),
-        foregroundColor:
-            MaterialStateProperty.all<Color>(Colors.white), // Text color
+        foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
         overlayColor: MaterialStateProperty.resolveWith<Color?>(
           (Set<MaterialState> states) {
             if (states.contains(MaterialState.pressed)) {
-              return Colors.purple[200]!.withOpacity(0.3); // Ripple effect
+              return Colors.purple[200]!.withOpacity(0.3);
             }
             return null;
           },
@@ -84,7 +110,7 @@ ThemeData buildPurpleTheme() {
       ),
     ),
     textTheme: const TextTheme(
-      bodyMedium: TextStyle(color: Colors.black87), // Default text color
+      bodyMedium: TextStyle(color: Colors.black87),
       titleLarge: TextStyle(
         color: Colors.purple,
         fontWeight: FontWeight.bold,

@@ -1,4 +1,4 @@
-package com.example.automail
+package com.devbyakshay.automail
 
 import io.flutter.embedding.android.FlutterActivity
 

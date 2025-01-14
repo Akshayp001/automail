@@ -29,7 +29,7 @@ class TemplateService {
     if (jsonString == null) return [];
 
     final jsonList = jsonDecode(jsonString) as List;
-    return jsonList.map((json) => EmailTemplate.fromJson(json)).toList();
+    return jsonList.map((json) => EmailTemplate.fromJson(json)).toSet().toList();
   }
 
   Future<List<EmailTemplate>> getTemplatesByCategory(String category) async {
