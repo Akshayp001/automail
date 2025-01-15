@@ -1,16 +1,22 @@
-# automail
+# AutoMail
 
-A new Flutter project.
+Flutter Application For Creating Email Templates And Saving Them For Resuse.....
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+- Using AutoMail You Can Create Email Templates Consisting of 
+   -  Subject
+   -  Email Body
+   -  Multiple Attachments
+   -  Email Category
+   -  Email Tags 
+- Create Email Templates And Resuse It In Future
+- Directly Navigate To Email Composer With Template Selection Option On Clicking On Email Anywhere In Mobile 
+- Send Email Using SMTP Service Directly
+- Save Your Templates On Cloud 
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+
+
