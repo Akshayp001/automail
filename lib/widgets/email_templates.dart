@@ -224,7 +224,7 @@ class _EmailTemplatesState extends State<EmailTemplates> {
                     onSelected: (value) {
                       switch (value) {
                         case 'use':
-                          Get.to(() => EmailComposerScreen(template: template));
+                          Get.to(() => EmailComposerScreen());
                           break;
                         case 'send':
                           _showSendDialog(template);

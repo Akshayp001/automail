@@ -1,3 +1,4 @@
+import 'package:automail/widgets/drawer_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,37 +14,10 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: CustomDrawer(),
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(CupertinoIcons.settings_solid),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const SettingsScreen()),
-            );
-          },
-        ),
         title: const Text('AutoMail'),
         centerTitle: true,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right:10.0),
-            child: InkWell(
-              child: CircleAvatar(
-                backgroundColor: Colors.white,
-                child: Icon(
-                  Icons.logout,
-                  color: Colors.red,
-                ),
-              ),
-              onTap: () async {
-                await FirebaseAuth.instance.signOut();
-                await GoogleSignIn().signOut();
-                Get.offAllNamed('/splash');
-              },
-            ),
-          ),
-        ],
       ),
       body: Center(
         child: Padding(
@@ -90,7 +64,7 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Get.to(EmailComposerScreen()),
+        onPressed: () => Get.toNamed('/compose'),
         child: const Icon(Icons.add),
       ),
     );

@@ -27,7 +27,7 @@ class _SplashScreenState extends State<SplashScreen>
 
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 2000),
+      duration: Duration(milliseconds: 500),
     );
 
     _opacity = Tween<double>(begin: 0.0, end: 1.0).animate(
@@ -45,7 +45,7 @@ class _SplashScreenState extends State<SplashScreen>
     );
 
     _controller.forward().whenComplete(() {
-      Timer(Duration(milliseconds: 1500), () async {
+      Timer(Duration(milliseconds: 500), () async {
         final User? currentUser = FirebaseAuth.instance.currentUser;
         if (currentUser != null) {
           Get.offAllNamed('/home');
@@ -131,7 +131,7 @@ class _SplashScreenState extends State<SplashScreen>
 
                       // Tagline
                       Text(
-                        "Smart Email Solutions",
+                        "Email Templates",
                         style: TextStyle(
                           fontSize: 16,
                           color: primaryPurple.withOpacity(0.7),
