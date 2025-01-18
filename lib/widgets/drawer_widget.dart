@@ -1,6 +1,8 @@
+import 'package:automail/services/app_version_service.dart';
 import 'package:automail/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class CustomDrawer extends StatefulWidget {
   const CustomDrawer({Key? key}) : super(key: key);
@@ -53,7 +55,7 @@ class _CustomDrawerState extends State<CustomDrawer>
             end: Alignment.bottomCenter,
             colors: [
               Theme.of(context).primaryColor.withOpacity(0.9),
-              Theme.of(context).colorScheme.secondary.withOpacity(0.6),
+              Colors.pink.shade50,
             ],
           ),
         ),
@@ -178,7 +180,7 @@ class _CustomDrawerState extends State<CustomDrawer>
                     children: [
                       _buildAnimatedListTile(
                         icon: Icons.email_rounded,
-                        title: 'SMTP Email Setup',
+                        title: 'Email Setup',
                         subtitle: 'Configure your email settings',
                         onTap: () =>
                             Navigator.pushNamed(context, '/smtp-settings'),
@@ -188,10 +190,18 @@ class _CustomDrawerState extends State<CustomDrawer>
                         icon: Icons.palette_rounded,
                         title: 'Theme',
                         subtitle: 'Customize your app appearance',
-                        onTap: () =>
-                            Navigator.pushNamed(context, '/theme-settings'),
+                        onTap: () async =>
+                            await AppVersionService.checkForUpdates(),
                         delay: 200,
                       ),
+                      // _buildAnimatedListTile(
+                      //   icon: Icons.palette_rounded,
+                      //   title: 'Theme',
+                      //   subtitle: 'Customize your app appearance',
+                      //   onTap: () =>
+                      //       Navigator.pushNamed(context, '/theme-settings'),
+                      //   delay: 200,
+                      // ),
                       const Padding(
                         padding: EdgeInsets.symmetric(horizontal: 20),
                         child: Divider(thickness: 1),
@@ -225,7 +235,10 @@ class _CustomDrawerState extends State<CustomDrawer>
                                 ),
                                 child: ElevatedButton.icon(
                                   onPressed: AuthService.signOut,
-                                  icon: const Icon(Icons.logout_rounded),
+                                  icon: const Icon(
+                                    Icons.logout_rounded,
+                                    color: Colors.white,
+                                  ),
                                   label: const Text('Sign Out'),
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.transparent,
@@ -249,6 +262,23 @@ class _CustomDrawerState extends State<CustomDrawer>
                   ),
                 ),
               ),
+              const SizedBox(height: 20),
+              FutureBuilder<PackageInfo>(
+                future: PackageInfo.fromPlatform(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) return const SizedBox();
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Text(
+                      'AutoMail ${snapshot.data!.version} (${snapshot.data!.buildNumber})',
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: 20),
             ],
           ),
         ),

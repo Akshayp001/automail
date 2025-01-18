@@ -113,7 +113,7 @@ class EmailComposerScreen extends StatelessWidget {
                       style: const TextStyle(fontSize: 14),
                     ),
                     subtitle: Text(
-                      _formatFileSize(file.size),
+                      file.size == 0 ? 'Unknown' : _formatFileSize(file.size),
                       style: TextStyle(
                         fontSize: 12,
                         color: Colors.grey[600],
@@ -266,6 +266,11 @@ class EmailComposerScreen extends StatelessWidget {
                         controller.selectedTemplate.value = newTemplate;
                         controller.subjectController.text = newTemplate.subject;
                         controller.bodyController.text = newTemplate.body;
+                        controller.attachments.value = newTemplate
+                            .attachmentPaths
+                            .map((val) => PlatformFile(
+                                name: val.split('/').last, size: 0, path: val))
+                            .toList();
                       }
                     },
                     decoration: InputDecoration(

@@ -2,6 +2,7 @@ import 'package:automail/screens/home_screen.dart';
 import 'package:automail/screens/login_screen.dart';
 import 'package:automail/screens/settings_screen.dart';
 import 'package:automail/screens/splash_screen.dart';
+import 'package:automail/services/app_version_service.dart';
 import 'package:automail/utils/bindings.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -68,6 +69,7 @@ class _EmailAppState extends State<EmailApp> {
   void initState() {
     super.initState();
     _initializeDeepLinks();
+    
   }
 
   void _initializeDeepLinks() async {
@@ -102,7 +104,7 @@ class _EmailAppState extends State<EmailApp> {
     return GetMaterialApp(
       title: 'AutoMail',
       theme: buildPurpleTheme(),
-    
+
       initialRoute: Routes.splash,
       // home: SplashScreen(),
       getPages: AppPages.pages,

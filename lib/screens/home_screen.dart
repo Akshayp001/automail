@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import '../services/app_version_service.dart';
 import 'email_compose_screen.dart';
 import '../../widgets/email_templates.dart';
 import '../../screens/settings_screen.dart';
@@ -13,6 +14,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppVersionService.checkForUpdates();
     return Scaffold(
       drawer: CustomDrawer(),
       appBar: AppBar(
@@ -25,39 +27,39 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ElevatedButton.icon(
-                icon: const Icon(Icons.explore),
-                label: const Text('Explore Templates'),
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 32,
-                    vertical: 16,
-                  ),
-                ),
+              // ElevatedButton.icon(
+              //   icon: const Icon(Icons.explore),
+              //   label: const Text('Explore Templates'),
+              //   style: ElevatedButton.styleFrom(
+              //     padding: const EdgeInsets.symmetric(
+              //       horizontal: 32,
+              //       vertical: 16,
+              //     ),
+              //   ),
 
-                // onPressed: () => _showTemplateExplorer(context),
-                onPressed: () {
-                  Get.snackbar('Comming Soon..', 'Feature Comming Soon..',
-                      icon: Icon(CupertinoIcons.timer),
-                      backgroundColor: Colors.amber.shade200);
-                },
-              ),
-              const SizedBox(height: 16),
-              const Text(
-                'or',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey,
-                ),
-              ),
-              const SizedBox(height: 16),
-              const Text(
-                'Create a new email using the + button below',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey,
-                ),
-              ),
+              //   // onPressed: () => _showTemplateExplorer(context),
+              //   onPressed: () {
+              //     Get.snackbar('Comming Soon..', 'Feature Comming Soon..',
+              //         icon: Icon(CupertinoIcons.timer),
+              //         backgroundColor: Colors.amber.shade200);
+              //   },
+              // ),
+              // const SizedBox(height: 16),
+              // const Text(
+              //   'or',
+              //   style: TextStyle(
+              //     fontSize: 16,
+              //     color: Colors.grey,
+              //   ),
+              // ),
+              // const SizedBox(height: 16),
+              // const Text(
+              //   'Create a new email using the + button below',
+              //   style: TextStyle(
+              //     fontSize: 16,
+              //     color: Colors.grey,
+              //   ),
+              // ),
               Expanded(child: EmailTemplates())
             ],
           ),
