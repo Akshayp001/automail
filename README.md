@@ -16,6 +16,13 @@ Flutter Application For Creating Email Templates And Saving Them For Resuse.....
 - Save Your Templates On Cloud 
 
 
+## Download
+
+
+[<img src="https://github.com/gokadzev/Musify/raw/master/repository_files/get-it-on-github.png" alt="Get it on Github" height="80">](https://github.com/Akshayp001/automail/releases/download/email-template-app/AutoMail_v1.0.0.apk)
+
+
+
 
 
 
