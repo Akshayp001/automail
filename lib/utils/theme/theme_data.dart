@@ -18,6 +18,7 @@ ThemeData buildPurpleTheme() {
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
+        iconColor: Colors.white,
         textStyle: const TextStyle(fontSize: 16),
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
         shape: RoundedRectangleBorder(

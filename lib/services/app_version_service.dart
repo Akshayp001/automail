@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:googleapis/adsense/v2.dart' as adsence;
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
@@ -45,7 +46,7 @@ class AppVersionService {
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   static final Dio _dio = Dio();
 
-  static Future<void> checkForUpdates() async {
+  static Future<void> checkForUpdates({bool isManualCheck = false}) async {
     try {
       final PackageInfo packageInfo = await PackageInfo.fromPlatform();
       final int currentVersionCode = int.parse(packageInfo.buildNumber);
@@ -63,6 +64,16 @@ class AppVersionService {
 
       if (latestVersion.versionCode > currentVersionCode) {
         _showUpdateDialog(latestVersion);
+      } else {
+        if (isManualCheck) {
+          Get.dialog(AlertDialog(
+            title: Text('Up To Date!'),
+            content: Text('App is already up to date!'),
+            actions: [
+              ElevatedButton(onPressed: () => Get.back(), child: Text('Close'))
+            ],
+          ));
+        }
       }
     } catch (e) {
       debugPrint('Error checking for updates: $e');
@@ -88,6 +99,7 @@ class AppVersionService {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   // Header with version info
+
                   Row(
                     children: [
                       Container(

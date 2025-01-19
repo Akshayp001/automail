@@ -1,13 +1,10 @@
+import 'package:automail/services/email_service.dart';
 import 'package:automail/widgets/drawer_widget.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import '../services/app_version_service.dart';
-import 'email_compose_screen.dart';
 import '../../widgets/email_templates.dart';
-import '../../screens/settings_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -15,6 +12,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AppVersionService.checkForUpdates();
+    EmailService.checkAndShowEmailSetupDialog();
     return Scaffold(
       drawer: CustomDrawer(),
       appBar: AppBar(
@@ -36,7 +34,6 @@ class HomeScreen extends StatelessWidget {
               //       vertical: 16,
               //     ),
               //   ),
-
               //   // onPressed: () => _showTemplateExplorer(context),
               //   onPressed: () {
               //     Get.snackbar('Comming Soon..', 'Feature Comming Soon..',
@@ -65,9 +62,19 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: Get.theme.primaryColor,
         onPressed: () => Get.toNamed('/compose'),
-        child: const Icon(Icons.add),
+        // child: const Icon(Icons.add),
+        label: Row(
+          children: [
+            Icon(CupertinoIcons.pen),
+            SizedBox(
+              width: 4,
+            ),
+            Text('Compose Email')
+          ],
+        ),
       ),
     );
   }

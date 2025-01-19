@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/email_composer_controller.dart';
@@ -168,54 +169,63 @@ class EmailComposerScreen extends StatelessWidget {
         foregroundColor: Colors.white,
         elevation: 0,
         actions: [
-          IconButton(
-            icon: const Icon(Icons.save_outlined),
-            onPressed: () {
-              Get.dialog(
-                AlertDialog(
-                  title: const Text('Save as Template'),
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      buildTextField(
-                        controller: controller.templateNameController,
-                        label: 'Template Name',
+          Padding(
+            padding: EdgeInsets.only(
+              right: 20,
+            ),
+            child: ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green.shade700),
+              label: Text('Save'),
+              icon: const Icon(Icons.save_outlined),
+              onPressed: () {
+                Get.dialog(
+                  AlertDialog(
+                    title: const Text('Save as Template'),
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        buildTextField(
+                          controller: controller.templateNameController,
+                          label: 'Template Name',
+                        ),
+                        const SizedBox(height: 16),
+                        buildTextField(
+                          controller: controller.categoryController,
+                          label: 'Category',
+                        ),
+                        const SizedBox(height: 16),
+                        buildTextField(
+                          controller: controller.tagsController,
+                          label: 'Tags (comma-separated)',
+                        ),
+                      ],
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Get.back(),
+                        child: Text(
+                          'Cancel',
+                          style: TextStyle(color: Colors.purple[700]),
+                        ),
                       ),
-                      const SizedBox(height: 16),
-                      buildTextField(
-                        controller: controller.categoryController,
-                        label: 'Category',
-                      ),
-                      const SizedBox(height: 16),
-                      buildTextField(
-                        controller: controller.tagsController,
-                        label: 'Tags (comma-separated)',
+                      ElevatedButton.icon(
+                        onPressed: () {
+                          Get.back();
+                          controller.saveAsTemplate();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.purple[700],
+                        ),
+                        label: const Text('Save'),
+                        icon: Icon(CupertinoIcons.floppy_disk),
                       ),
                     ],
                   ),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Get.back(),
-                      child: Text(
-                        'Cancel',
-                        style: TextStyle(color: Colors.purple[700]),
-                      ),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Get.back();
-                        controller.saveAsTemplate();
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.purple[700],
-                      ),
-                      child: const Text('Save'),
-                    ),
-                  ],
-                ),
-              );
-            },
-            tooltip: 'Save as Template',
+                );
+              },
+              // tooltip: 'Save as Template',
+            ),
           ),
         ],
       ),

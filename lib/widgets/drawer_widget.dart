@@ -1,5 +1,6 @@
 import 'package:automail/services/app_version_service.dart';
 import 'package:automail/services/auth_service.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -187,11 +188,12 @@ class _CustomDrawerState extends State<CustomDrawer>
                         delay: 100,
                       ),
                       _buildAnimatedListTile(
-                        icon: Icons.palette_rounded,
-                        title: 'Theme',
-                        subtitle: 'Customize your app appearance',
+                        icon: Icons.update,
+                        title: 'App Updates',
+                        subtitle: 'Check for App Updates',
                         onTap: () async =>
-                            await AppVersionService.checkForUpdates(),
+                            await AppVersionService.checkForUpdates(
+                                isManualCheck: true),
                         delay: 200,
                       ),
                       // _buildAnimatedListTile(

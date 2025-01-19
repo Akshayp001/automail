@@ -25,10 +25,30 @@ class EmailComposerController extends GetxController {
     super.onInit();
     templateService =
         TemplateService(userId: FirebaseAuth.instance.currentUser?.email ?? '');
-    fetchTemplates();
+    initInitials();
     final initialEmail = Get.arguments?['initialEmail'] as String?;
+
     if (initialEmail != null) {
       toController.text = initialEmail;
+    }
+  }
+
+  initInitials() async {
+    await fetchTemplates();
+    final initialTemplate =
+        Get.arguments?['initialTemplate'] as Map<String, dynamic>?;
+    print(initialTemplate);
+    print(initialTemplate.runtimeType);
+
+    if (initialTemplate != null) {
+      final initTemp = EmailTemplate.fromJson(initialTemplate);
+      subjectController.text = initTemp.subject;
+      bodyController.text = initTemp.body;
+      attachments.value = initTemp.attachmentPaths
+          .map((val) =>
+              PlatformFile(name: val.split('/').last, size: 0, path: val))
+          .toList();
+      // selectedTemplate.value = initTemp;
     }
   }
 

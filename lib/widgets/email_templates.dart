@@ -1,4 +1,5 @@
 // lib/widgets/email_templates.dart
+import 'package:automail/main.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -200,16 +201,16 @@ class _EmailTemplatesState extends State<EmailTemplates> {
                           ],
                         ),
                       ),
-                      const PopupMenuItem(
-                        value: 'edit',
-                        child: Row(
-                          children: [
-                            Icon(Icons.edit),
-                            SizedBox(width: 8),
-                            Text('Edit'),
-                          ],
-                        ),
-                      ),
+                      // const PopupMenuItem(
+                      //   value: 'edit',
+                      //   child: Row(
+                      //     children: [
+                      //       Icon(Icons.edit),
+                      //       SizedBox(width: 8),
+                      //       Text('Edit'),
+                      //     ],
+                      //   ),
+                      // ),
                       const PopupMenuItem(
                         value: 'delete',
                         child: Row(
@@ -224,15 +225,17 @@ class _EmailTemplatesState extends State<EmailTemplates> {
                     onSelected: (value) {
                       switch (value) {
                         case 'use':
-                          Get.to(() => EmailComposerScreen());
+                          Get.toNamed(Routes.emailComposer, arguments: {
+                            'initialTemplate': template.toJson()
+                          });
                           break;
                         case 'send':
                           _showSendDialog(template);
                           break;
-                        case 'edit':
-                          // Implement edit functionality
+                        // case 'edit':
+                        //   // Implement edit functionality
 
-                          break;
+                        //   break;
                         case 'delete':
                           TemplateService(
                                   userId: FirebaseAuth
