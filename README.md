@@ -63,18 +63,31 @@ Never write repetitive emails again! AutoMail streamlines your workflow by letti
 📸 Preview
 ----------
 
-Template Creation
+# Email Template Manager Guide
 
-Category View
+## 1. Authentication Setup
+![OAuth Configuration](assets/oauth_ss.jpg)  
+*OAuth 2.0 authentication screen for API integrations*
 
-Quick Send
+![SMTP Configuration](assets/smtp_auth_ss.jpg)  
+*SMTP server configuration for direct email delivery*
 
-![Creation Screen](https://via.placeholder.com/300x600?text=Template+Editor)
+## 2. Template Management
+![Template Creation](assets/creating_template_ss.jpg)  
+*Template editor interface with rich text formatting options*
 
-![Category View](https://via.placeholder.com/300x600?text=Category+List)
+## 3. Dashboard Overview
+![Homepage](assets/homepage_ss.jpg)  
+*Main dashboard showing recent templates and quick actions*
 
-![Send Interface](https://via.placeholder.com/300x600?text=Send+Preview)
+* * *
 
+**Key Features:**
+- Template editor with WYSIWYG interface
+- Multiple authentication methods
+- Category-based template organization
+- One-click email sending
+- Template version history
 * * *
 
 📥 Installation
@@ -86,7 +99,7 @@ Quick Send
 
 
 
-git clone https://github.com/Akshayp001/automail.git
+`git clone https://github.com/Akshayp001/automail.git`
 
 `cd automail`
 
