@@ -66,21 +66,19 @@ Never write repetitive emails again! AutoMail streamlines your workflow by letti
 # Email Template Manager Guide
 
 ## 1. Authentication Setup
-![OAuth Configuration](assets/icons/oauth_ss.jpg)  
+<img src="assets/icons/oauth_ss.jpg" width="400" alt="OAuth Setup">  
 *OAuth 2.0 authentication screen for API integrations*
 
-![SMTP Configuration](assets/icons/smtp_auth_ss.jpg)  
+<img src="assets/icons/smtp_auth_ss.jpg" width="400" alt="SMTP Setup">  
 *SMTP server configuration for direct email delivery*
 
 ## 2. Template Management
-![Template Creation](assets/icons/creating_template_ss.jpg)  
+<img src="assets/icons/creating_template_ss.jpg" width="400" alt="Template Editor">  
 *Template editor interface with rich text formatting options*
 
 ## 3. Dashboard Overview
-![Homepage](assets/icons/homepage_ss.jpg)  
+<img src="assets/icons/homepage_ss.jpg" width="400" alt="Main Dashboard">  
 *Main dashboard showing recent templates and quick actions*
-
-* * *
 
 **Key Features:**
 - Template editor with WYSIWYG interface
